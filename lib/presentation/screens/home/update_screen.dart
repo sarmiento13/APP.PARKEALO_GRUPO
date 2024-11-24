@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 
 import '../../../data/models/agency.dart';
 import '../../../logic/providers/agency_provider.dart';
-import '../../../logic/providers/favorite_provider.dart';
 
 class UpdateScreen extends StatefulWidget {
   final Agency agency;
@@ -110,8 +109,6 @@ class _UpdateScreenState extends State<UpdateScreen> {
                   joinedDate: DateTime.now(),
                   categoryId: int.parse(categoryController.text.trim()),
                 );
-                agencyProvider.update(agency);
-
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Agencia modifcado'),

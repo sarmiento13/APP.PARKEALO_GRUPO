@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:voygo/data/models/agency.dart';
 
 import '../../data/models/favorite.dart';
-import '../../logic/providers/favorite_provider.dart';
 
 class FavoriteWidget extends StatelessWidget {
   final Favorite favorite;
@@ -18,7 +16,7 @@ class FavoriteWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final favoriteProvider = Provider.of<FavoriteProvider>(context);
+    // final favoriteProvider = Provider.of<FavoriteProvider>(context);
     return ListTile(
       leading: const CircleAvatar(
         maxRadius: 32,
@@ -37,11 +35,10 @@ class FavoriteWidget extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
       ),
       trailing: IconButton(
-        // onPressed: () {
-        //   print('favoriteId');
-        //   print(favoriteId);
-        // },
-        onPressed: () => favoriteProvider.delete(favorite.id!),
+        onPressed: () {
+          print('favoriteId');
+        },
+        // onPressed: () => favoriteProvider.delete(favorite.id!),
         icon: const Icon(Icons.favorite),
       ),
       onTap: () => context.go('/show/${agency.id}'),

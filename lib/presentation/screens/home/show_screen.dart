@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:voygo/data/database/data.dart';
 import 'package:voygo/data/models/agency.dart';
+import 'package:voygo/logic/providers/category_provider.dart';
 import '../../../logic/providers/agency_provider.dart';
 
 class ShowScreen extends StatelessWidget {
@@ -11,7 +13,12 @@ class ShowScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final agencyProvider = Provider.of<AgencyProvider>(context);
+    final provider = Provider.of<AgencyProvider>(context);
+    final isFav = provider.isFavorite(agency.id);
+    final categoryProvider = Provider.of<CategoryProvider>(context).categories;
+
+    final indexCategory = categoryProvider.indexWhere((element) => element.id == agency.categoryId);
+    final category = categoryProvider[indexCategory];
 
     return Scaffold(
       appBar: AppBar(
@@ -22,8 +29,10 @@ class ShowScreen extends StatelessWidget {
             tooltip: 'Editar',
           ),
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.favorite_outline),
+            onPressed: () {
+              provider.toogleFavorite(agency.id);
+            },
+            icon: Icon(isFav ? Icons.favorite : Icons.favorite_outline),
             tooltip: 'Favorito',
           ),
         ],
@@ -148,7 +157,7 @@ class ShowScreen extends StatelessWidget {
                             ),
                           ListTile(
                             leading: const Icon(Icons.category),
-                            title: Text('${agency.categoryId}'),
+                            title: Text(category.name),
                             visualDensity: VisualDensity.compact,
                             dense: true,
                           ),
@@ -165,7 +174,7 @@ class ShowScreen extends StatelessWidget {
                   const SizedBox(height: 16),
                   FilledButton.tonalIcon(
                     onPressed: () {
-                      agencyProvider.delete(agency.id!);
+                      provider.delete(agency.id!);
                       context.pop();
                     },
                     icon: const Icon(Icons.delete),

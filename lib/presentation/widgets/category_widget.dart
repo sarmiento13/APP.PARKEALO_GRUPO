@@ -14,11 +14,12 @@ class CategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Chip(
+    return ChoiceChip(
+      selected: id == 2 ? true : false,
       label: Text(name),
-      side: BorderSide(
-        color: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
-      ),
+      // side: BorderSide(
+      //   color: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+      // ),
     );
   }
 }

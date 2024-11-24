@@ -1,5 +1,5 @@
 import '../models/category.dart';
 
 abstract class CategoryRepository {
-  Future<List<Category>> getAllCategory();
+  Future<List<Category>> getAll();
 }

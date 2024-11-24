@@ -1,27 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:voygo/logic/providers/category_provider.dart';
 
 import '../../../logic/providers/agency_provider.dart';
-import '../../widgets/agency_widget.dart';
-import '../../widgets/category_widget.dart';
+import '../../../logic/providers/category_provider.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    Provider.of<CategoryProvider>(context, listen: false).getAllCategory();
-    Provider.of<AgencyProvider>(context, listen: false).getAllAgency();
-
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     final agencyProvider = Provider.of<AgencyProvider>(context);
@@ -49,27 +35,159 @@ class _HomeScreenState extends State<HomeScreen> {
                 spacing: 8,
                 children: List.generate(
                   categoryProvider.categories.length,
-                  (index) => CategoryWidget(
-                    id: categoryProvider.categories[index].id,
-                    name: categoryProvider.categories[index].name,
-                    description: categoryProvider.categories[index].description,
-                  ),
+                  (index) {
+                    final category = categoryProvider.categories[index];
+                    return ChoiceChip(
+                      selected:
+                          categoryProvider.selected == index ? true : false,
+                      onSelected: (value) {
+                        categoryProvider.toogleCategory(index);
+                        agencyProvider.getAllByCategoryId(category.id);
+                      },
+                      showCheckmark: false,
+                      label: Text(category.name),
+                      side: BorderSide(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .secondary
+                            .withOpacity(0.2),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
-            GridView.count(
-              padding: const EdgeInsets.all(16.0),
-              primary: false,
-              shrinkWrap: true,
-              crossAxisCount: 3,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-              childAspectRatio: 0.60,
-              children: List.generate(
-                agencyProvider.agencies.length,
-                (index) => AgencyWidget(agency: agencyProvider.agencies[index]),
-              ),
-            ),
+            categoryProvider.selected == null
+                ? GridView.builder(
+                    padding: const EdgeInsets.all(16.0),
+                    itemCount: agencyProvider.agencies.length,
+                    primary: false,
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16,
+                      childAspectRatio: 0.60,
+                    ),
+                    itemBuilder: (context, index) {
+                      final agency = agencyProvider.agencies[index];
+                      return Card(
+                        color: Colors.transparent,
+                        elevation: 0,
+                        borderOnForeground: true,
+                        clipBehavior: Clip.hardEdge,
+                        margin: EdgeInsets.zero,
+                        child: InkWell(
+                          onTap: () => context.go('/show/${agency.id}'),
+                          child: Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(12),
+                                  bottomRight: Radius.circular(12),
+                                ),
+                                child: Image.asset(
+                                  'assets/onboarding/01.jpg',
+                                  height: 110,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(5),
+                                alignment: Alignment.centerLeft,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      agency.companyName,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      agency.location!,
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  )
+                : GridView.builder(
+                    padding: const EdgeInsets.all(16.0),
+                    itemCount: agencyProvider.categoryAgencies.length,
+                    primary: false,
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16,
+                      childAspectRatio: 0.60,
+                    ),
+                    itemBuilder: (context, index) {
+                      final agency = agencyProvider.categoryAgencies[index];
+                      return Card(
+                        color: Colors.transparent,
+                        elevation: 0,
+                        borderOnForeground: true,
+                        clipBehavior: Clip.hardEdge,
+                        margin: EdgeInsets.zero,
+                        child: InkWell(
+                          onTap: () => context.go('/show/${agency.id}'),
+                          child: Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(12),
+                                  bottomRight: Radius.circular(12),
+                                ),
+                                child: Image.asset(
+                                  'assets/onboarding/01.jpg',
+                                  height: 110,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(5),
+                                alignment: Alignment.centerLeft,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      agency.companyName,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      agency.location!,
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
           ],
         ),
       ),

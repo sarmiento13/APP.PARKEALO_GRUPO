@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:voygo/logic/providers/agency_provider.dart';
 import 'package:voygo/logic/providers/category_provider.dart';
-import 'package:voygo/logic/providers/favorite_provider.dart';
 import 'package:voygo/logic/providers/setting_provider.dart';
 
 import 'navigation/navigation_service.dart';
@@ -18,9 +17,6 @@ void main() {
       ),
       ChangeNotifierProvider(
         create: (_) => AgencyProvider(),
-      ),
-      ChangeNotifierProvider(
-        create: (_) => FavoriteProvider(),
       ),
     ],
     child: const MainApp(),

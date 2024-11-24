@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:voygo/data/models/agency.dart';
-import 'package:voygo/data/models/favorite.dart';
-import 'package:voygo/logic/providers/favorite_provider.dart';
+
+import '../../logic/providers/agency_provider.dart';
 
 class AgencyWidget extends StatelessWidget {
   final Agency agency;
@@ -11,10 +11,9 @@ class AgencyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<AgencyProvider>(context);
 
-    final favoriteProvider = Provider.of<FavoriteProvider>(context);
-
-    return Card(
+    return Card.outlined(
       color: Colors.transparent,
       elevation: 0,
       borderOnForeground: true,
@@ -22,8 +21,7 @@ class AgencyWidget extends StatelessWidget {
       margin: EdgeInsets.zero,
       child: InkWell(
         onTap: () {
-          final favorite = Favorite(agencyId: agency.id!);
-          favoriteProvider.create(favorite);
+          provider.toogleFavorite(agency.id);
         },
         // onTap: () => context.go('/show/${agency.id}'),
         child: Column(
@@ -53,9 +51,15 @@ class AgencyWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 5),
-                  Text(
-                    agency.location!,
-                    style: Theme.of(context).textTheme.bodySmall,
+                  Row(
+                    children: [
+                      Text(
+                        agency.location!,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      Spacer(),
+                      Icon(provider.isFavorite(agency.id) ? Icons.favorite : Icons.favorite_outline),
+                    ],
                   ),
                 ],
               ),

@@ -8,45 +8,36 @@ import 'favorite_repository.dart';
 class FavoriteRepositoryImpl implements FavoriteRepository {
   final DbHelper _dbHelper = DbHelper();
 
+  // FavoriteRepositoryImpl(this._dbHelper);
+
   @override
   Future<int> create(Favorite favorite) async {
-    try {
-      final db = await _dbHelper.getDatabase();
-      return db.insert(
-        DbConstants.tableFavorite,
-        favorite.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-    } catch (e) {
-      throw Exception('Error create: $e');
-    }
+    final db = await _dbHelper.getDatabase();
+    return db.insert(
+      DbConstants.tableFavorite,
+      favorite.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   @override
-  Future<bool> delete(int id) async {
-    try {
-      final db = await _dbHelper.getDatabase();
-      final count = await db.delete(
-        DbConstants.tableFavorite,
-        where: 'id=?',
-        whereArgs: [id],
-      );
-      return count > 0;
-    } catch (e) {
-      throw Exception('Error delete: $e');
-    }
+  Future<int> delete(int agencyId) async {
+    final db = await _dbHelper.getDatabase();
+    return db.delete(
+      DbConstants.tableFavorite,
+      where: 'agency_id=?',
+      whereArgs: [agencyId],
+    );
   }
 
   @override
-  Future<List<Favorite>> getAll() async {
-    try {
-      final db = await _dbHelper.getDatabase();
-      final List<Map<String, dynamic>> models =
-          await db.query(DbConstants.tableFavorite);
-      return models.map((model) => Favorite.fromMap(model)).toList();
-    } catch (e) {
-      throw Exception('Error getAll: $e');
-    }
+  Future<List<int>> getAll() async {
+    final db = await _dbHelper.getDatabase();
+    final result = await db.query(
+      DbConstants.tableFavorite,
+      columns: ['agency_id'],
+    );
+    return result.map((e) => e['agency_id'] as int).toList();
   }
 
   @override

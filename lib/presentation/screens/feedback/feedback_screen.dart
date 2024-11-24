@@ -13,6 +13,12 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   int? selected;
   final commentController = TextEditingController();
 
+  @override
+  void dispose() {
+    commentController.dispose();
+    super.dispose();
+  }
+
   final List<Emoticon> emoticons = [
     Emoticon(
       icon: "assets/emoji/rage.gif",

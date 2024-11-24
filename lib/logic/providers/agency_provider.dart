@@ -1,45 +1,72 @@
 import 'package:flutter/material.dart';
+import 'package:voygo/data/repositories/agency_repository_impl.dart';
+import 'package:voygo/data/repositories/favorite_repository_impl.dart';
+
+import '../../data/repositories/agency_repository.dart';
+import '../../data/repositories/favorite_repository.dart';
 
 import '../../data/models/agency.dart';
-import '../../data/repositories/agency_repository.dart';
-import '../../data/repositories/agency_repository_impl.dart';
+import '../../data/models/favorite.dart';
 
 class AgencyProvider with ChangeNotifier {
-  final AgencyRepository agencyRepository = AgencyRepositoryImpl();
+  final AgencyRepository _agencyRepository = AgencyRepositoryImpl();
+  final FavoriteRepository _favoriteRepository = FavoriteRepositoryImpl();
 
-  final List<Agency> _agencies = [];
+  List<Agency> _agencies = [];
+  List<int> _favorites = [];
+  List<Agency> _categoryAgencies = [];
 
   List<Agency> get agencies => _agencies;
+  List<int> get favorites => _favorites;
+  List<Agency> get categoryAgencies => _categoryAgencies;
 
-  Future<void> getAllAgency() async {
-    _agencies.addAll(await agencyRepository.getAll());
+  List<Agency> get favoritesAgencies {
+    return _agencies.where((agency) => _favorites.contains(agency.id)).toList();
+  }
+
+  AgencyProvider() {
+    _load();
+  }
+
+  Future<void> _load() async {
+    _agencies = await _agencyRepository.getAll();
+    _favorites = await _favoriteRepository.getAll();
     notifyListeners();
   }
 
-  void create(Agency agency) {
-    _agencies.add(agency);
-    notifyListeners();
+  bool isFavorite(int? agencyId) {
+    return _favorites.contains(agencyId);
   }
 
-  List<Agency> readAll() {
-    return _agencies;
-  }
-
-  Agency? getAgencyById(int id) {
-    return _agencies.firstWhere((element) => element.id == id);
-  }
-
-  void update(Agency agency) {
-    int index = _agencies.indexWhere((element) => element.id == agency.id);
-    if (index != -1) {
-      _agencies[index] = agency;
-      notifyListeners();
+  Future<void> toogleFavorite(int? agencyId) async {
+    if (isFavorite(agencyId!)) {
+      await _favoriteRepository.delete(agencyId);
+      _favorites.remove(agencyId);
+    } else {
+      final favorite = Favorite(agencyId: agencyId);
+      await _favoriteRepository.create(favorite);
+      _favorites.add(agencyId);
     }
+    notifyListeners();
+  }
+
+  Future<void> create(Agency agency) async {
+    final id = await _agencyRepository.create(agency);
+    final agencyById = await _agencyRepository.getById(id);
+    _agencies.add(agencyById!);
+    notifyListeners();
   }
 
   Future<void> delete(int id) async {
-    _agencies.removeWhere((agency) => agency.id == id);
-    await agencyRepository.delete(id);
+    await _agencyRepository.delete(id);
+    agencies.removeWhere((element) => element.id == id);
+    categoryAgencies.removeWhere((element) => element.id == id);
+    notifyListeners();
+  }
+
+  Future<void> getAllByCategoryId(int? categoryId) async {
+    _categoryAgencies = [];
+    _categoryAgencies = await _agencyRepository.getAllByCategoryId(categoryId!);
     notifyListeners();
   }
 }
