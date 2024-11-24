@@ -1,0 +1,45 @@
+name: voygo
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  go_router: ^14.4.1
+  path: ^1.9.0
+  provider: ^6.1.2
+  sqflite: ^2.4.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/vendors/logo.png
+    - assets/vendors/logotipo.png
+    - assets/onboarding/01.jpg
+    - assets/onboarding/02.jpg
+    - assets/onboarding/03.jpg
+    - assets/emoji/rage.gif
+    - assets/emoji/smile.gif
+    - assets/emoji/holding.gif
+    - assets/emoji/joy.gif
+    - assets/emoji/monocle.gif
+    - assets/social/facebook.png
+    - assets/social/instagram.png
+    - assets/social/tiktok.png
+    - assets/social/twitter.png
+    - assets/social/youtube.png
+    - assets/social/dribbble.png
+    - assets/social/github.png
+    - assets/about/portada.jpg
+    - assets/sql/ddl_agencias_de_turismos.sql
+    - assets/sql/dml_agencias_de_turismos.sql
