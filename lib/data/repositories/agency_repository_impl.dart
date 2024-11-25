@@ -1,3 +1,5 @@
+import 'package:sqflite/sqflite.dart';
+
 import '../../core/utils/db_constants.dart';
 import '../database/db_helper.dart';
 import '../models/agency.dart';
@@ -13,6 +15,7 @@ class AgencyRepositoryImpl implements AgencyRepository {
     return await db.insert(
       DbConstants.tableAgency,
       agency.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 

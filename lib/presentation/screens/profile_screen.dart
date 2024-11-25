@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:voygo/data/database/data.dart';
+import 'package:provider/provider.dart';
+import 'package:voygo/logic/providers/module_provider.dart';
+import 'package:voygo/presentation/widgets/colors_widget.dart';
 import 'package:voygo/presentation/widgets/module_widget.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -8,6 +10,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ModuleProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Perfil'),
@@ -19,75 +22,40 @@ class ProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     maxRadius: 38,
-                    backgroundImage: NetworkImage(
-                        'https://yt3.ggpht.com/ETiaDmhpKitYqlNIVKCEvE-qgA5rU9WIOpRHxxYA7HRFmhrVohxbPCSPLAr8-C0bRvX4ZVBzuD4=s88-c-k-c0x00ffffff-no-rj'),
+                    child: Text(
+                      'IV',
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
                   ),
                   const SizedBox(width: 16.0),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Insanegaz',
+                        'APSTI-IESTP-JMA',
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
-                      const Text('insanegaz@gmail.com'),
+                      const Text('HDSII y AD&S 2024-II'),
                       const SizedBox(height: 8.0),
-                      Wrap(
-                        spacing: 8,
-                        children: [
-                          ClipOval(
-                            child: ColoredBox(
-                              color: Colors.red.shade400,
-                              child: const SizedBox(
-                                height: 24,
-                                width: 24,
-                              ),
-                            ),
-                          ),
-                          ClipOval(
-                            child: ColoredBox(
-                              color: Colors.green.shade400,
-                              child: const SizedBox(
-                                height: 24,
-                                width: 24,
-                              ),
-                            ),
-                          ),
-                          ClipOval(
-                            child: ColoredBox(
-                              color: Colors.blue.shade400,
-                              child: const SizedBox(
-                                height: 24,
-                                width: 24,
-                              ),
-                            ),
-                          ),
-                          ClipOval(
-                            child: ColoredBox(
-                              color: Colors.yellow.shade400,
-                              child: const SizedBox(
-                                height: 24,
-                                width: 24,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      const ColorsWidget(),
                     ],
                   ),
                 ],
               ),
             ),
             ...List.generate(
-              modulos.length,
+              provider.modules.length,
               (index) {
+                final module = provider.modules[index];
+                print('INDIVIDUAL');
+                print(module);
                 return ModuleWidget(
-                  id: modulos[index].id,
-                  name: modulos[index].name,
-                  iconName: modulos[index].icon,
-                  state: modulos[index].state,
+                  id: module.id,
+                  name: module.name,
+                  iconName: module.icon,
+                  state: module.state,
                 );
               },
             ),

@@ -35,18 +35,18 @@ class _UpdateScreenState extends State<UpdateScreen> {
   void initState() {
     rucController.text = widget.agency.ruc;
     companyNameController.text = widget.agency.companyName;
-    addressController.text = widget.agency.address!;
-    referenceController.text = widget.agency.reference!;
-    emailController.text = widget.agency.email!;
-    servicesController.text = widget.agency.services!;
-    descriptionController.text = widget.agency.description!;
-    cellPhoneNumberController.text = widget.agency.cellPhoneNumber!;
-    schedulesController.text = widget.agency.schedules!;
-    attentionTimeController.text = widget.agency.attentionTime!;
-    frontPageController.text = widget.agency.frontPage!;
-    avatarController.text = widget.agency.avatar!;
-    locationController.text = widget.agency.location!;
-    categoryController.text = widget.agency.categoryId as String;
+    // addressController.text = widget.agency.address!;
+    // referenceController.text = widget.agency.reference!;
+    // emailController.text = widget.agency.email!;
+    // servicesController.text = widget.agency.services!;
+    // descriptionController.text = widget.agency.description!;
+    // cellPhoneNumberController.text = widget.agency.cellPhoneNumber!;
+    // schedulesController.text = widget.agency.schedules!;
+    // attentionTimeController.text = widget.agency.attentionTime!;
+    // frontPageController.text = widget.agency.frontPage!;
+    // avatarController.text = widget.agency.avatar!;
+    // locationController.text = widget.agency.location!;
+    // categoryController.text = widget.agency.categoryId as String;
     super.initState();
   }
 

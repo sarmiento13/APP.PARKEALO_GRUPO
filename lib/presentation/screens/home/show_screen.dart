@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:voygo/data/database/data.dart';
-import 'package:voygo/data/models/agency.dart';
-import 'package:voygo/logic/providers/category_provider.dart';
+import '../../../data/models/agency.dart';
 import '../../../logic/providers/agency_provider.dart';
+import '../../../logic/providers/category_provider.dart';
 
 class ShowScreen extends StatelessWidget {
   final Agency agency;
@@ -17,7 +16,8 @@ class ShowScreen extends StatelessWidget {
     final isFav = provider.isFavorite(agency.id);
     final categoryProvider = Provider.of<CategoryProvider>(context).categories;
 
-    final indexCategory = categoryProvider.indexWhere((element) => element.id == agency.categoryId);
+    final indexCategory = categoryProvider
+        .indexWhere((element) => element.id == agency.categoryId);
     final category = categoryProvider[indexCategory];
 
     return Scaffold(
@@ -40,8 +40,8 @@ class ShowScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.asset(
-              'assets/onboarding/02.jpg',
+            Image.network(
+              'https://placehold.co/400x250.png',
               width: double.infinity,
               height: 280,
               fit: BoxFit.cover,
@@ -55,22 +55,24 @@ class ShowScreen extends StatelessWidget {
                     children: [
                       const CircleAvatar(
                         backgroundImage: NetworkImage(
-                            'https://yt3.ggpht.com/ETiaDmhpKitYqlNIVKCEvE-qgA5rU9WIOpRHxxYA7HRFmhrVohxbPCSPLAr8-C0bRvX4ZVBzuD4=s88-c-k-c0x00ffffff-no-rj'),
+                            'https://placehold.co/200x200.png'),
                         maxRadius: 32,
                       ),
                       const SizedBox(width: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            agency.companyName,
-                            style: Theme.of(context).textTheme.titleMedium,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(agency.services ?? ''),
-                        ],
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              agency.companyName,
+                              style: Theme.of(context).textTheme.titleMedium,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(agency.services ?? ''),
+                          ],
+                        ),
                       ),
                     ],
                   ),

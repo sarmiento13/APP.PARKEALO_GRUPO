@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:voygo/logic/providers/agency_provider.dart';
-import 'package:voygo/logic/providers/category_provider.dart';
-import 'package:voygo/logic/providers/setting_provider.dart';
 
+import 'logic/providers/agency_provider.dart';
+import 'logic/providers/category_provider.dart';
+import 'logic/providers/module_provider.dart';
+import 'logic/providers/setting_provider.dart';
 import 'navigation/navigation_service.dart';
 
 void main() {
@@ -17,6 +18,9 @@ void main() {
       ),
       ChangeNotifierProvider(
         create: (_) => AgencyProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => ModuleProvider(),
       ),
     ],
     child: const MainApp(),
@@ -36,13 +40,13 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.light,
-          seedColor: Colors.blue.shade900,
+          seedColor: settingProvider.color,
         ),
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.dark,
-          seedColor: Colors.blue.shade900,
+          seedColor: settingProvider.color,
         ),
       ),
       themeMode: settingProvider.darkMode ? ThemeMode.dark : ThemeMode.light,

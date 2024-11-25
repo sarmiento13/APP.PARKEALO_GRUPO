@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../../data/models/agency.dart';
-import '../../../data/models/category.dart';
 import '../../../logic/providers/agency_provider.dart';
 
 class CreateScreen extends StatefulWidget {
@@ -71,36 +68,43 @@ class _CreateScreenState extends State<CreateScreen> {
           FilledButton(
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                print('Formulario válido');
-                int id = agencyProvider.agencies.length;
-                id++;
-                final agency = Agency(
-                  id: id,
-                  ruc: rucController.text.trim(),
-                  companyName: companyNameController.text.trim(),
-                  address: addressController.text.trim(),
-                  reference: referenceController.text.trim(),
-                  email: emailController.text.trim(),
-                  services: servicesController.text.trim(),
-                  description: descriptionController.text.trim(),
-                  cellPhoneNumber: cellPhoneNumberController.text.trim(),
-                  schedules: schedulesController.text.trim(),
-                  attentionTime: attentionTimeController.text.trim(),
-                  location: locationController.text.trim(),
-                  joinedDate: DateTime.now(),
-                  categoryId: int.parse(categoryController.text.trim()),
-                );
-                agencyProvider.create(agency);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Agencia agregado'),
+                    content: Text('Falta ser implementando.'),
+                    duration: Duration(milliseconds: 1500),
                   ),
                 );
-                context.pop();
+                // print('Formulario válido');
+                // int id = agencyProvider.agencies.length;
+                // id++;
+                // final agency = Agency(
+                //   id: id,
+                //   ruc: rucController.text.trim(),
+                //   companyName: companyNameController.text.trim(),
+                //   address: addressController.text.trim(),
+                //   reference: referenceController.text.trim(),
+                //   email: emailController.text.trim(),
+                //   services: servicesController.text.trim(),
+                //   description: descriptionController.text.trim(),
+                //   cellPhoneNumber: cellPhoneNumberController.text.trim(),
+                //   schedules: schedulesController.text.trim(),
+                //   attentionTime: attentionTimeController.text.trim(),
+                //   location: locationController.text.trim(),
+                //   joinedDate: DateTime.now(),
+                //   categoryId: int.parse(categoryController.text.trim()),
+                // );
+                // agencyProvider.create(agency);
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   const SnackBar(
+                //     content: Text('Agencia agregado'),
+                //   ),
+                // );
+                // context.pop();
               }
             },
             child: const Text('Guardar'),
           ),
+          const SizedBox(width: 4),
         ],
       ),
       body: SingleChildScrollView(
@@ -115,14 +119,55 @@ class _CreateScreenState extends State<CreateScreen> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Image.asset(
-                      'assets/onboarding/01.jpg',
+                    Image.network(
+                      'https://placehold.co/400x250.png',
                       width: double.infinity,
                       height: 250,
                       fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        return loadingProgress == null
+                            ? child
+                            : const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(
+                          Icons.error,
+                          color: Colors.red,
+                        );
+                      },
                     ),
                     FilledButton.tonal(
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('400x250'),
+                              content: TextField(
+                                controller: rucController,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'URL portada',
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text('Cancelar'),
+                                ),
+                                FilledButton(
+                                  onPressed: () {
+                                    print('Aun falta implementar');
+                                  },
+                                  child: Text('Validar'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
                       child: const Text('Subir portada'),
                     ),
                   ],
@@ -283,14 +328,49 @@ class _CreateScreenState extends State<CreateScreen> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Image.asset(
-                      'assets/onboarding/02.jpg',
+                    Image.network(
+                      'https://placehold.co/200x200.png',
                       width: 200,
                       height: 200,
                       fit: BoxFit.cover,
                     ),
                     FilledButton.tonal(
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('200x200'),
+                              content: TextField(
+                                controller: rucController,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'URL avatar',
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text('Cancelar'),
+                                ),
+                                FilledButton(
+                                  onPressed: null,
+                                  child: SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Theme.of(context)
+                                          .bottomAppBarTheme
+                                          .surfaceTintColor,
+                                      strokeWidth: 2,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
                       child: const Text('Subir avatar'),
                     ),
                   ],

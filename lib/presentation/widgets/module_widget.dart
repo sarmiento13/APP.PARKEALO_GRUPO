@@ -18,10 +18,18 @@ class ModuleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return state ? ListTile(
-      leading: Icon(StringUtils().iconMapping[iconName] ?? Icons.help),
-      title: Text(name),
-      onTap: () {}
-    ): const SizedBox();
+    return state
+        ? ListTile(
+            leading: Icon(StringUtils().iconMapping[iconName] ?? Icons.help),
+            title: Text(name),
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                 SnackBar(
+                  content: Text('$name no implementado.'),
+                  duration: const Duration(milliseconds: 1500),
+                ),
+              );
+            })
+        : const SizedBox();
   }
 }

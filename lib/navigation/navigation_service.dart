@@ -1,12 +1,10 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:voygo/data/models/agency.dart';
 import '../logic/providers/agency_provider.dart';
 import '../presentation/screens/home/create_screen.dart';
 import '../presentation/screens/home/show_screen.dart';
+import '../presentation/screens/home/update_screen.dart';
 import '../presentation/screens/onboarding/onboarding_screen.dart';
 import '../presentation/screens/setting/about_screen.dart';
 import '../presentation/screens/setting/faqs_screen.dart';
@@ -52,6 +50,10 @@ final GoRouter router = GoRouter(
           path: 'update/:id',
           builder: (context, state) {
             final id = int.parse(state.pathParameters['id']!);
+            final provider = Provider.of<AgencyProvider>(context, listen: false);
+            final index = provider.agencies.indexWhere((element) => element.id == id);
+            final agency = provider.agencies[index];
+            return UpdateScreen(agency: agency);
             // final agency = Provider.of<AgencyProvider>(context, listen: false)
             //     .getById(id) as Agency?;
             // if (agency == null) {

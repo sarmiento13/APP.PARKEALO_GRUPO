@@ -67,8 +67,8 @@ class HomeScreen extends StatelessWidget {
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       mainAxisSpacing: 16,
-                      crossAxisSpacing: 16,
-                      childAspectRatio: 0.60,
+                      crossAxisSpacing: 8,
+                      childAspectRatio: 0.63,
                     ),
                     itemBuilder: (context, index) {
                       final agency = agencyProvider.agencies[index];
@@ -87,9 +87,9 @@ class HomeScreen extends StatelessWidget {
                                   bottomLeft: Radius.circular(12),
                                   bottomRight: Radius.circular(12),
                                 ),
-                                child: Image.asset(
-                                  'assets/onboarding/01.jpg',
-                                  height: 110,
+                                child: Image.network(
+                                  'https://placehold.co/400x250.png',
+                                  height: 120,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -152,9 +152,9 @@ class HomeScreen extends StatelessWidget {
                                   bottomLeft: Radius.circular(12),
                                   bottomRight: Radius.circular(12),
                                 ),
-                                child: Image.asset(
-                                  'assets/onboarding/01.jpg',
-                                  height: 110,
+                                child: Image.network(
+                                  'https://placehold.co/400x250.png',
+                                  height: 120,
                                   fit: BoxFit.cover,
                                 ),
                               ),
