@@ -31,5 +31,3 @@ class CategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 }
-
-
