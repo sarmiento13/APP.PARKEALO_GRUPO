@@ -32,6 +32,3 @@ class CategoryProvider with ChangeNotifier {
   }
 }
 
-
-
-
