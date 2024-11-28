@@ -31,7 +31,3 @@ class CategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 8d25f0cd264782de2b51826eb92d15583c8e43e1
